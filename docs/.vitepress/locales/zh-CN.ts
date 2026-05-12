@@ -19,6 +19,10 @@ const guideGroups = [
       {
         text: '快速上手',
         link: '/guide/quick-use',
+      },
+      {
+        text: '从 v1 迁移到 v2',
+        link: '/guide/migration-v2',
       }
     ]
   },
