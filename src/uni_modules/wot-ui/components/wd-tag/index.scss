@@ -127,6 +127,7 @@ $tag-extra-large-round-padding: var(--wot-tag-extra-large-round-padding, $n-3 $p
 // 超大尺寸图标尺寸
 $tag-extra-large-icon-size: var(--wot-tag-extra-large-icon-size, $n-12) !default;
 
+// 这里的顺序决定了生成的 CSS 优先级，default 必须放在首位以确保其他尺寸可以覆盖它
 $tag-types: (
   "default": (
     "color": $tag-info-color,
