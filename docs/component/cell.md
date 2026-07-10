@@ -80,6 +80,12 @@
 </wd-cell-group>
 ```
 
+如果 `prefix-icon` 和 `suffix-icon` 都使用 CSS 图标，推荐将 `css-icon` 设置为 `true`，并分别把 `prefix-icon`、`suffix-icon` 写成对应的 CSS 图标类名。若直接给 `css-icon` 传字符串类名，前后图标会共用同一个 CSS 类名。
+
+```html
+<wd-cell css-icon prefix-icon="i-carbon-user" suffix-icon="i-carbon-chevron-right" />
+```
+
 ### 大尺寸
 
 ```html
@@ -209,6 +215,7 @@
 | suffix-icon | 后置图标名 | string | - |
 | icon-size | 图标大小 | `string \| number` | - |
 | icon-prefix | 图标类名前缀 | string | - |
+| css-icon | CSS 图标，用法参考 Icon 组件 | `boolean \| string` | `false` |
 | to | 跳转地址 | string | - |
 | replace | 跳转时是否替换当前页面历史 | boolean | false |
 | clickable | 是否开启点击反馈 | boolean | false |
