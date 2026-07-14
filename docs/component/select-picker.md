@@ -81,6 +81,50 @@ const columns = ref([
 <wd-select-picker filterable type="radio" v-model="singleValue" v-model:visible="show" :columns="columns" />
 ```
 
+#### 自定义搜索
+
+设置自定义搜索函数可以实现更复杂的搜索逻辑。远程搜索也可以用这个方法实现。
+
+```html
+<wd-select-picker
+  v-model="exampleSelectorOptions.value"
+  :visible="exampleSelectorOptions.visible"
+  :columns="exampleSelectorOptions.columns"
+  :loading="exampleSelectorOptions.loading"
+  :filter-handler="exampleSelectorOptions"
+  filterable
+/>
+```
+
+```ts
+const exampleSelectorOptions = reactive({
+  columns: [],
+  visible: false,
+  value: '',
+  loading: false,
+})
+
+/**
+ * filter-handler 接受三个参数，但是只能通过外部定义的 exampleSelectorOptions 来控制状态
+ * 
+ * 选项数据
+ * @param columns
+ * 搜索值
+ * @param filterValue
+ * 加载状态
+ * @param loading
+ */
+function onExampleSeletorSearch(columns, filterValue, loading) {
+  exampleSelectorOptions.loading = true
+  return alovaInstance.Post('https://example.com').then((response) => {
+    exampleSelectorOptions.columns = response.data
+    exampleSelectorOptions.loading = false
+    return true
+  })
+}
+```
+
+
 ## 特殊样式
 
 ### 选项变化事件

@@ -337,10 +337,24 @@ function getFilterText(label: string, filterVal: string): Array<{ type: 'active'
 
 function handleFilterChange({ value }: { value: string }) {
   filterVal.value = value
-  if (value === '') {
-    filterColumns.value = props.columns
+  if (props.filterHandler) {
+    callInterceptor(props.filterHandler, {
+      args: [props.columns, value, value], done: () => {
+        const formatFilterColumns = filterColumns.map((item) => {
+          return {
+            ...item,
+            [props.labelKey]: getFilterText(item[props.labelKey], filterVal)
+          }
+        })
+        filterColumns.value = formatFilterColumns
+      }
+    })
   } else {
-    formatFilterColumns(props.columns, value)
+    if (value === '') {
+      filterColumns.value = props.columns
+    } else {
+      formatFilterColumns(props.columns, value)
+    }
   }
 }
 
