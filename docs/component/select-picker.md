@@ -107,22 +107,25 @@ const exampleSelectorOptions = reactive({
 /**
  * filter-handler 接受三个参数，但是只能通过外部定义的 exampleSelectorOptions 来控制状态
  * 
- * 选项数据
+ * 筛选后的选项数据
  * @param columns
  * 搜索值
  * @param filterValue
  * 加载状态
  * @param loading
  */
-function onExampleSeletorSearch(columns, filterValue, loading) {
-  exampleSelectorOptions.loading = true
-  return alovaInstance.Post('https://example.com').then((response) => {
-    exampleSelectorOptions.columns = response.data
-    exampleSelectorOptions.loading = false
+function onExampleSelectorSearch(columns: Ref<Record<string, any>[]>, filterValue: string) {
+  exampleSelector.loading = true
+  exampleSelector.filter_value = filterValue
+  return exampleFilter({ limit: 50, q: filterValue }).then((response) => {
+    columns.value = response.data
+    exampleSelector.loading = false
     return true
   })
 }
 ```
+
+`exampleFilter` 是搜索回调函数，无论是自定义搜索还是远程搜索都通过这个函数完成。如果是远程搜索，配合 `@wot-ui/starter` 集成的 `alova` 自动缓存能获得更加流程的体验。
 
 
 ## 特殊样式
