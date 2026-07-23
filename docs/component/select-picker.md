@@ -91,7 +91,7 @@ const columns = ref([
   :visible="exampleSelectorOptions.visible"
   :columns="exampleSelectorOptions.columns"
   :loading="exampleSelectorOptions.loading"
-  :filter-handler="exampleSelectorOptions"
+  :filter-handler="onExampleSelectorSearch"
   filterable
 />
 ```
@@ -115,11 +115,12 @@ const exampleSelectorOptions = reactive({
  * @param loading
  */
 function onExampleSelectorSearch(columns: Ref<Record<string, any>[]>, filterValue: string) {
-  exampleSelector.loading = true
-  exampleSelector.filter_value = filterValue
+  exampleSelectorOptions.loading = true
+  exampleSelectorOptions.filter_value = filterValue
   return exampleFilter({ limit: 50, q: filterValue }).then((response) => {
     columns.value = response.data
-    exampleSelector.loading = false
+    exampleSelectorOptions.loading = false
+    // 如果是符合预期的结果，必须返回 true
     return true
   })
 }
@@ -196,6 +197,7 @@ const beforeConfirm = (value: string[]) => {
 | safe-area-inset-bottom | 是否适配底部安全区 | `boolean` | `true` |
 | filterable | 是否支持本地搜索 | `boolean` | `false` |
 | filter-placeholder | 搜索框占位符 | `string` | `'搜索'` |
+| filter-handler | 自定义搜索回调函数 | `function` | - |
 | scroll-into-view | 重新打开时是否滚动到选中项 | `boolean` | `true` |
 | custom-content-class | 自定义弹层内容区域类名 | `string` | `''` |
 | show-confirm | 是否显示确认按钮，仅 `radio` 模式生效 | `boolean` | `true` |
@@ -223,8 +225,9 @@ const beforeConfirm = (value: string[]) => {
 
 ## Methods
 
-| 方法名 | 说明 | 类型 |
-| --- | --- | --- |
-| open | 打开弹层 | `() => void` |
-| close | 关闭弹层 | `() => void` |
+| 方法名 | 说明                                                                                                   | 类型                                                                                        |
+| --- |--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| open | 打开弹层                                                                                               | `() => void`                                                                                |
+| close | 关闭弹层                                                                                               | `() => void`                                                                                |
+| filter-placeholder | 自定义搜索 | `(columns: Ref<Record<string, any>[]>, filterValue: string) => boolean \| Promise<boolean>` |
 
